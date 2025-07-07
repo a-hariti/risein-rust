@@ -12,7 +12,7 @@ mod task1 {
     pub fn main() {
         let string1 = String::from("Hello");
         let string2 = String::from(" World");
-        let result = crate::task1::concatenate_strings(&string1, &string2);
+        let result = concatenate_strings(&string1, &string2);
         println!("Concatenated string: {}", result);
     }
 }
