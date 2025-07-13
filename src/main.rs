@@ -95,8 +95,8 @@ mod task3 {
     }
     pub trait Account {
         fn balance(&self) -> f64;
-        fn deposit(&mut self, amount: f64);
-        fn withdraw(&mut self, amount: f64);
+        fn deposit(&mut self, amount: f64) -> Result<(), String>;
+        fn withdraw(&mut self, amount: f64) -> Result<(), String>;
     }
 
     impl<'a> BankAccount<'a> {
@@ -114,22 +114,34 @@ mod task3 {
             self.balance
         }
 
-        fn deposit(&mut self, amount: f64) {
+        fn deposit(&mut self, amount: f64) -> Result<(), String> {
+            if amount <= 0.0 {
+                return Err("Deposit amount must be positive".to_string());
+            }
             self.balance += amount;
+            Ok(())
         }
 
-        fn withdraw(&mut self, amount: f64) {
-            if self.balance >= amount {
-                self.balance -= amount;
+        fn withdraw(&mut self, amount: f64) -> Result<(), String> {
+            if self.balance < amount {
+                return Err("Insufficient funds".to_string());
             }
+            self.balance -= amount;
+            Ok(())
         }
     }
 
     pub fn main() {
         let mut account1 = BankAccount::new("1234567890", "John Doe", 0.0);
         let mut account2 = BankAccount::new("0987654321", "Jane Doe", 50.0);
-        account1.deposit(100.0);
-        account2.withdraw(25.0);
+        match account1.deposit(100.0) {
+            Ok(_) => println!("Deposit successful"),
+            Err(e) => println!("Error: {}", e),
+        }
+        match account2.withdraw(25.0) {
+            Ok(_) => println!("Withdrawal successful"),
+            Err(e) => println!("Error: {}", e),
+        }
         println!("Account 1 balance after deposit: {}", account1.balance());
         println!("Account 2 balance after withdrawal: {}", account2.balance());
     }
