@@ -1,8 +1,12 @@
 fn main() {
-    // crate::task1::main();
-    // crate::task2::main();
-    crate::task3::main();
+    // task1::main();
+    // task2::main();
+    task3::main();
+    task4::main();
 }
+
+mod custom_filter;
+use custom_filter as task4;
 
 mod task1 {
     pub fn concatenate_strings(s1: &str, s2: &str) -> String {
